@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hovedlayout for RandomActivity -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout_for_random_activity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="16dp"
+    tools:context=".RandomActivity">
+
+    <!-- TextView for å vise resultatet (det tilfeldige tallet) -->
+    <TextView
+        android:id="@+id/textViewResultDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Trykk på knappen for å hente et tilfeldig tall."
+        android:textSize="18sp"
+        android:layout_marginBottom="20dp"/>
+
+    <!-- Knapp for å starte prosessen med å hente et tilfeldig tall -->
+    <Button
+        android:id="@+id/buttonGetRandomNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hent tilfeldig tall fra MainActivity"/>
+
+</LinearLayout>
