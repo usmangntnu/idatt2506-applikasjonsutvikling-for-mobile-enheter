@@ -1,0 +1,42 @@
+# IntelliJ / Android Studio
+.idea/
+*.iml
+*.iws
+misc.xml
+deployment.xml
+modules.xml
+# workspace.xml # Deprecated
+
+# Gradle
+.gradle/
+build/
+
+# Local configuration
+local.properties
+
+# Android Studio specific
+captures/
+.navigation/
+.externalNativeBuild/
+.cxx/
+
+# macOS
+.DS_Store
+
+# Built application files
+*.apk
+*.aab
+*.ap_
+
+# Files for the Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Log Files
+*.log
+
+# Keystore files (if not intentionally shared)
+# *.jks
+# *.keystore
