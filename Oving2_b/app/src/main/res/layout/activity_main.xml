@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Oppgave 2b: Layoutdefinisjon -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!-- Oppgave 2b: To TextView som skal inneholde tallene. -->
+    <!-- Starter med tekst som indikerer lasting (del av d), ikke 3 og 5 direkte,
+         da tallene hentes asynkront fra Oppgave 1. -->
+    <TextView
+        android:id="@+id/number1TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/generating_numbers"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/answerLabelTextView"
+        app:layout_constraintEnd_toStartOf="@+id/number2TextView"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/number2TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="24sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/number1TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/number1TextView" />
+
+    <!-- Oppgave 2b: TextView for ledetekst "Svar:" -->
+    <TextView
+        android:id="@+id/answerLabelTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/answer"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/upperLimitLabelTextView"
+        app:layout_constraintEnd_toStartOf="@+id/answerEditText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/number1TextView" />
+
+    <!-- Oppgave 2b: EditText for brukerens svar. Starter uten verdi (hint istedenfor "8"),
+         da oppgaven nå innebærer dynamiske tall. -->
+    <EditText
+        android:id="@+id/answerEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="5"
+        android:inputType="number"
+        android:hint="@string/answer"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/answerLabelTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/answerLabelTextView" />
+
+    <!-- Oppgave 2b: TextView for ledetekst "Øvre grense:" -->
+    <TextView
+        android:id="@+id/upperLimitLabelTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/upper_limit"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/addButton"
+        app:layout_constraintEnd_toStartOf="@+id/upperLimitEditText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/answerLabelTextView" />
+
+    <!-- Oppgave 2b: EditText for øvre grense. Starter med verdien 10. -->
+    <EditText
+        android:id="@+id/upperLimitEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="5"
+        android:inputType="number"
+        android:text="10"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/upperLimitLabelTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/upperLimitLabelTextView" />
+
+    <!-- Oppgave 2b: To knapper for addisjon og multiplikasjon -->
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:onClick="onAddClick"
+        android:text="@string/add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/multiplyButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/upperLimitLabelTextView" />
+
+    <Button
+        android:id="@+id/multiplyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onMultiplyClick"
+        android:text="@string/multiply"
+        app:layout_constraintBaseline_toBaselineOf="@+id/addButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/addButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

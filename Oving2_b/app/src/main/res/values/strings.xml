@@ -1,0 +1,18 @@
+<resources>
+    <!-- Oppgave 2a: Verdier satt inn i strings.xml -->
+    <string name="app_name">Oving2_b</string>
+    <string name="add">Adder</string>
+    <string name="multiply">Multipliser</string><string name="answer">Svar:</string>
+    <string name="upper_limit">Øvre grense:</string>
+    <string name="correct">Riktig!</string>
+    <string name="wrong">Feil. Riktig svar er %1$d</string> <!-- %1$d er placeholder for tallet -->
+
+    <!-- Strenger lagt til for bedre brukeropplevelse og feilhåndtering (del av d) -->
+    <string name="generating_numbers">Genererer tall...</string>
+    <string name="error_fetching_number">Feil ved henting av tall fra Oving_2a</string>
+    <string name="error_fetching_number_detailed">Klarte ikke hente tilfeldig tall fra Oving_2a (Resultat: %1$d)</string>
+    <string name="error_oving2a_not_installed">Feil: Appen for tallgenerering (Oving_2a) er ikke installert.</string>
+    <string name="enter_answer">Vennligst skriv inn et svar.</string>
+    <string name="invalid_numbers_in_task">Ugyldige tall i oppgaven. Vent på nye tall.</string>
+    <string name="wait_for_numbers">Vent til tallene er generert.</string>
+</resources>
