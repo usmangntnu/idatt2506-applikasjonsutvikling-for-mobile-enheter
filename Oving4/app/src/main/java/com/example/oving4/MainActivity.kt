@@ -4,10 +4,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.fragment.app.FragmentActivity
-import com.example.oving4.ItemDetailFragment
-import com.example.oving4.ItemListFragment
-import com.example.oving4.R
+import androidx.appcompat.app.AppCompatActivity
 
 /**
  * MainActivity fungerer som "mellommann" mellom ItemListFragment og ItemDetailFragment.
@@ -19,7 +16,8 @@ import com.example.oving4.R
  * Merk: vi håndterer configChanges i manifest (orientation|screenSize), derfor får vi
  * onConfigurationChanged istedenfor full restart ved rotasjon.
  */
-class MainActivity : FragmentActivity(), ItemListFragment.Callback {
+// ENDRE HER: Arv fra AppCompatActivity
+class MainActivity : AppCompatActivity(), ItemListFragment.Callback {
 
     /** Liste av titler hentet fra res/values/strings.xml */
     private lateinit var titles: Array<String>
@@ -29,8 +27,7 @@ class MainActivity : FragmentActivity(), ItemListFragment.Callback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(
-            R.layout.activity_main)
+        setContentView(R.layout.activity_main) // Bruker activity_main.xml
 
         titles = resources.getStringArray(R.array.titles)
 
@@ -47,7 +44,11 @@ class MainActivity : FragmentActivity(), ItemListFragment.Callback {
         }
 
         // Vis start-element
-        showItem(currentIndex)
+        // Det er lurt å sjekke om titles faktisk har elementer før du kaller showItem
+        // for å unngå krasj hvis R.array.titles er tom.
+        if (titles.isNotEmpty()) {
+            showItem(currentIndex)
+        }
     }
 
     /**
@@ -55,17 +56,23 @@ class MainActivity : FragmentActivity(), ItemListFragment.Callback {
      * Aktiviteten mottar posisjon og videreformidler visningen til ItemDetailFragment.
      */
     override fun onItemSelected(position: Int) {
-        currentIndex = position
-        showItem(currentIndex)
+        // Sikrer at posisjonen er gyldig for listen
+        if (position >= 0 && position < titles.size) {
+            currentIndex = position
+            showItem(currentIndex)
+        }
     }
 
     /**
      * Viser element på posisjon i ItemDetailFragment.
      */
     private fun showItem(index: Int) {
-        val detail = supportFragmentManager.findFragmentById(R.id.detail_container)
-        if (detail is ItemDetailFragment) {
-            detail.showItem(index)
+        // Sikrer at indeksen er gyldig
+        if (index >= 0 && index < titles.size) {
+            val detailFragment = supportFragmentManager.findFragmentById(R.id.detail_container)
+            if (detailFragment is ItemDetailFragment) {
+                detailFragment.showItem(index)
+            }
         }
     }
 
@@ -85,8 +92,8 @@ class MainActivity : FragmentActivity(), ItemListFragment.Callback {
                 true
             }
             R.id.action_next -> {
-                val n = titles.size
-                if (currentIndex < n - 1) {
+                // Sørg for at titles.size er tilgjengelig og ikke tom
+                if (titles.isNotEmpty() && currentIndex < titles.size - 1) {
                     currentIndex++
                     showItem(currentIndex)
                 }
@@ -110,8 +117,12 @@ class MainActivity : FragmentActivity(), ItemListFragment.Callback {
      * Portrett -> vertical (detail over list). Landskap -> horizontal (side-by-side).
      */
     private fun setOrientation(config: Configuration) {
+        // Det er tryggere å bruke view binding eller findViewById hver gang
+        // istedenfor å lagre en referanse hvis viewet kan bli nullstilt.
+        // Men i dette tilfellet, siden det er i onConfigurationChanged og aktiviteten ikke restartes,
+        // er det greit.
         val root = findViewById<android.widget.LinearLayout>(R.id.root_container)
-        root.orientation =
+        root?.orientation = // Legg til null-sjekk for sikkerhets skyld
             if (config.orientation == Configuration.ORIENTATION_PORTRAIT)
                 android.widget.LinearLayout.VERTICAL
             else
