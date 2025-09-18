@@ -12,16 +12,13 @@
     android:padding="8dp">
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/detail_container"
-        android:name="com.example.oving4.ItemDetailFragment"
-        android:layout_width="match_parent"
+        android:id="@+id/detail_container"        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         tools:ignore="FragmentTagUsage" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/list_container"
-        android:name="com.example.oving4.ItemListFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
