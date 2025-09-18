@@ -2,6 +2,7 @@ package com.example.oving4
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log // Anbefalt for feilsøking
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity
  * Merk: vi håndterer configChanges i manifest (orientation|screenSize), derfor får vi
  * onConfigurationChanged istedenfor full restart ved rotasjon.
  */
-// ENDRE HER: Arv fra AppCompatActivity
 class MainActivity : AppCompatActivity(), ItemListFragment.Callback {
 
     /** Liste av titler hentet fra res/values/strings.xml */
@@ -68,11 +68,14 @@ class MainActivity : AppCompatActivity(), ItemListFragment.Callback {
      */
     private fun showItem(index: Int) {
         // Sikrer at indeksen er gyldig
-        if (index >= 0 && index < titles.size) {
+        if (this::titles.isInitialized && index >= 0 && index < titles.size) { // Lagt til sjekk for titles.isInitialized
             val detailFragment = supportFragmentManager.findFragmentById(R.id.detail_container)
             if (detailFragment is ItemDetailFragment) {
+                Log.d("MainActivity", "showItem - Showing item at index: $index") // For feilsøking
                 detailFragment.showItem(index)
             }
+        } else {
+            Log.w("MainActivity", "showItem - Invalid index or titles not initialized. Index: $index") // For feilsøking
         }
     }
 
@@ -93,7 +96,7 @@ class MainActivity : AppCompatActivity(), ItemListFragment.Callback {
             }
             R.id.action_next -> {
                 // Sørg for at titles.size er tilgjengelig og ikke tom
-                if (titles.isNotEmpty() && currentIndex < titles.size - 1) {
+                if (this::titles.isInitialized && titles.isNotEmpty() && currentIndex < titles.size - 1) { // Lagt til sjekk for titles.isInitialized
                     currentIndex++
                     showItem(currentIndex)
                 }
@@ -109,7 +112,22 @@ class MainActivity : AppCompatActivity(), ItemListFragment.Callback {
      */
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        setOrientation(newConfig)
+        Log.d("MainActivity", "onConfigurationChanged - New orientation: ${newConfig.orientation}") // For feilsøking
+
+        setOrientation(newConfig) // Justerer layout-retningen
+
+        // VIKTIG: Fortell detaljfragmentet å vise riktig element på nytt
+        // Sjekk også at 'titles' er initialisert
+        if (this::titles.isInitialized && titles.isNotEmpty()) {
+            Log.d("MainActivity", "onConfigurationChanged - Calling showItem($currentIndex)") // For feilsøking
+            showItem(currentIndex)
+        } else {
+            Log.w("MainActivity", "onConfigurationChanged - Titles not initialized or empty, cannot show item.") // For feilsøking
+        }
+
+        // VIKTIG: Be systemet tegne menyen på nytt
+        invalidateOptionsMenu()
+        Log.d("MainActivity", "onConfigurationChanged - Called invalidateOptionsMenu()") // For feilsøking
     }
 
     /**
@@ -122,10 +140,12 @@ class MainActivity : AppCompatActivity(), ItemListFragment.Callback {
         // Men i dette tilfellet, siden det er i onConfigurationChanged og aktiviteten ikke restartes,
         // er det greit.
         val root = findViewById<android.widget.LinearLayout>(R.id.root_container)
-        root?.orientation = // Legg til null-sjekk for sikkerhets skyld
-            if (config.orientation == Configuration.ORIENTATION_PORTRAIT)
-                android.widget.LinearLayout.VERTICAL
-            else
-                android.widget.LinearLayout.HORIZONTAL
+        val newOrientation = if (config.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            android.widget.LinearLayout.VERTICAL
+        } else {
+            android.widget.LinearLayout.HORIZONTAL
+        }
+        Log.d("MainActivity", "setOrientation - Setting LinearLayout to: ${if (newOrientation == android.widget.LinearLayout.VERTICAL) "VERTICAL" else "HORIZONTAL"}") // For feilsøking
+        root?.orientation = newOrientation // Legg til null-sjekk for sikkerhets skyld
     }
 }
