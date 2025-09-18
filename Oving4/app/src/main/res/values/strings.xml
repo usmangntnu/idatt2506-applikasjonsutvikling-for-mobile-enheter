@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">Oving4</string>
+    <string name="prev">Forrige</string>
+    <string name="next">Neste</string>
+
+    <!-- TODO: Erstatt med faktiske titler -->
+    <string-array name="titles">
+        <item>Title 1</item>
+        <item>Title 2</item>
+        <item>Title 3</item>
+        <item>Title 4</item>
+    </string-array>
+
+    <!-- TODO: Skriv bedre beskrivelser for hvert element -->
+    <string-array name="descriptions">
+        <item>Description 1</item>
+        <item>Description 2</item>
+        <item>Description 3</item>
+        <item>Description 4</item>
+    </string-array>
+
+    <!-- TODO: drawable navn (må matche navn i res/drawable uten extension) -->
+    <string-array name="images">
+        <item>image1</item>
+        <item>image2</item>
+        <item>image3</item>
+        <item>image4</item>
+    </string-array>
 </resources>
