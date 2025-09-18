@@ -1,8 +1,14 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Oving4" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Base.Theme.Oving4" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Her kan du tilpasse farger som AppCompat-temaet bruker -->
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryDark">@color/purple_700</item> <!-- Brukes for statuslinjen på eldre versjoner -->
+        <item name="colorAccent">@color/teal_200</item> <!-- Brukes for UI-aksenter som knapper, avhukingsbokser etc. -->
+
+        <!-- Du kan fjerne Material3-spesifikke items her hvis du ikke bruker dem aktivt -->
+        <!-- <item name="colorPrimaryVariant">@color/purple_700</item> -->
+        <!-- <item name="colorOnPrimary">@color/white</item> -->
     </style>
 
     <style name="Theme.Oving4" parent="Base.Theme.Oving4" />
