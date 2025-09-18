@@ -3,23 +3,24 @@
     <string name="prev">Forrige</string>
     <string name="next">Neste</string>
 
-    <!-- TODO: Erstatt med faktiske titler -->
     <string-array name="titles">
-        <item>Title 1</item>
-        <item>Title 2</item>
-        <item>Title 3</item>
-        <item>Title 4</item>
+        <item>Usman</item>
+        <item>Usman og Alma</item>
+        <item>17.mai</item>
+        <item>Hurra</item>
     </string-array>
 
-    <!-- TODO: Skriv bedre beskrivelser for hvert element -->
     <string-array name="descriptions">
-        <item>Description 1</item>
-        <item>Description 2</item>
-        <item>Description 3</item>
-        <item>Description 4</item>
+        <item>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</item>
+        <item>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</item>
+        <item>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</item>
+        <item>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</item>
     </string-array>
 
-    <!-- TODO: drawable navn (må matche navn i res/drawable uten extension) -->
     <string-array name="image_names">
         <item>foto1</item>
         <item>foto2</item>
