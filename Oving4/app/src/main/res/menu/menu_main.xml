@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action-prev"
+        android:id="@+id/action_prev"
         android:title="@string/prev"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action-next"
+        android:id="@+id/action_next"
         android:title="@string/next"
         app:showAsAction="ifRoom" />
 </menu>
