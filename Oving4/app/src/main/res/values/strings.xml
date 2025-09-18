@@ -20,10 +20,10 @@
     </string-array>
 
     <!-- TODO: drawable navn (må matche navn i res/drawable uten extension) -->
-    <string-array name="images_names">
-        <item>image1</item>
-        <item>image2</item>
-        <item>image3</item>
-        <item>image4</item>
+    <string-array name="image_names">
+        <item>foto1</item>
+        <item>foto2</item>
+        <item>foto3</item>
+        <item>foto4</item>
     </string-array>
 </resources>
