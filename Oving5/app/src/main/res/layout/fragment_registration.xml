@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Navn -->
+    <EditText
+        android:id="@+id/etName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Navn"
+        android:inputType="textPersonName"
+        android:imeOptions="actionNext"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Kortnummer -->
+    <EditText
+        android:id="@+id/etCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Kortnummer"
+        android:inputType="number"
+        android:imeOptions="actionDone"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Start spill-knapp -->
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start nytt spill"/>
+
+    <!-- Tilbakemelding fra server -->
+    <TextView
+        android:id="@+id/tvMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Melding fra server vises her"
+        android:paddingTop="16dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+</LinearLayout>

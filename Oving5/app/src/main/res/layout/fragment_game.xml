@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Tallet som brukeren tipper -->
+    <EditText
+        android:id="@+id/etNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Skriv inn ditt tall"
+        android:inputType="number"
+        android:imeOptions="actionDone"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Tipp-knapp -->
+    <Button
+        android:id="@+id/btnTip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tippe!"/>
+
+    <!-- Respons fra server -->
+    <TextView
+        android:id="@+id/tvResponse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Serverens svar kommer her"
+        android:paddingTop="16dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+</LinearLayout>
