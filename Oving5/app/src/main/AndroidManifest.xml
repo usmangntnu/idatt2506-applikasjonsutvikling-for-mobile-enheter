@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"    xmlns:tools="http://schemas.android.com/tools">
 
+    <!--
+        Tillatelse for internettilgang.
+        Denne er påkrevd for at applikasjonen skal kunne kommunisere med
+        web-tjeneren (https://bigdata.idi.ntnu.no/mobil/tallspill.jsp).
+        Uten denne tillatelsen vil alle nettverkskall feile med en SecurityException.
+    -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -13,12 +18,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Oving5">
+        <!--
+            Hovedaktiviteten for applikasjonen.
+            Denne aktiviteten vil bli startet når brukeren trykker på app-ikonet.
+            Den fungerer som en container for fragmentene (RegistrationFragment og GameFragment).
+        -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
