@@ -18,6 +18,7 @@ import kotlinx.coroutines.withContext
  * Et [Fragment] som håndterer selve tallspillet.
  * Brukeren kan tippe et tall. Tipset sendes til en web-tjener som validerer det.
  * Fragmentet viser respons fra tjeneren (f.eks. om tallet er for høyt, for lavt, eller korrekt).
+ * Viser en dialog når spillet er over, med mulighet for å starte på nytt.
  *
  * @property navn Navnet på spilleren, mottatt fra [RegistrationFragment].
  * @property kort Kortnummeret til spilleren, mottatt fra [RegistrationFragment].
@@ -47,6 +48,7 @@ class GameFragment : Fragment(R.layout.fragment_game) {
             Log.d("GameFragment", "Fragment opprettet med Navn: $navn, Kort: $kort")
         }
     }
+
     /**
      * Kalles umiddelbart etter at [Fragment.onCreateView] har returnert, men før noen lagret
      * tilstand er gjenopprettet i viewet.
@@ -63,13 +65,6 @@ class GameFragment : Fragment(R.layout.fragment_game) {
         btnTip = view.findViewById(R.id.btnTip)
         tvResponse = view.findViewById(R.id.tvResponse)
 
-        // Hent den initielle meldingen fra tjeneren (f.eks. "Oppgi et tall mellom X og Y")
-        // Dette kan hentes fra argumentene, eller ved et initiellt GET-kall hvis nødvendig.
-        // For enkelhets skyld antar vi at RegistrationFragment har sendt en melding som kan vises,
-        // eller vi kan sette en generell melding her.
-        // Hvis tjeneren gir instruksjoner direkte etter registrering, kan den vises her.
-        // For eksempel: tvResponse.text = arguments?.getString("initialMessageFromServer") ?: "Klar til å tippe!"
-
 
         btnTip.setOnClickListener {
             val tall = etNumber.text.toString().trim()
@@ -80,17 +75,11 @@ class GameFragment : Fragment(R.layout.fragment_game) {
 
             Log.d("GameFragment", "Tipp-knapp trykket. Tall: $tall. Spiller: Navn=$navn, Kort=$kort")
 
-            // Start en coroutine innenfor fragmentets livssyklus for å håndtere nettverkskallet.
             lifecycleScope.launch {
-                // Parameteren "tall" er spesifisert i oppgaveteksten.
-                // Navn og kortnummer sendes ikke eksplisitt her, da tjeneren skal huske dem via cookies
-                // som ble satt under registreringen (håndtert av HttpWrapper).
                 val params = mapOf("tall" to tall)
                 Log.d("GameFragment", "Sender GET-request til tjener med params: $params")
 
                 val response: String = try {
-                    // Utfør nettverkskallet på IO-tråden (håndtert av HttpWrapper)
-                    // Ifølge oppgaveteksten kan tipping gjøres med GET: "...endre innholdet i adressefeltet til å sende parameteren tall=5..."
                     network.get(params)
                 } catch (e: Exception) {
                     Log.e("GameFragment", "Nettverksfeil under tipping", e)
@@ -99,19 +88,17 @@ class GameFragment : Fragment(R.layout.fragment_game) {
 
                 Log.d("GameFragment", "Mottatt respons fra tjener: $response")
 
-                // Oppdater UI på hovedtråden (Main)
                 withContext(Dispatchers.Main) {
                     tvResponse.text = response
 
-                    // Sjekk om brukeren har vunnet eller tapt (brukt opp forsøk)
-                    // Oppgaveteksten sier: "<Navn> du har vunnet <beløp> som kommer inn på ditt kort <kortnummer>"
-                    // Eller en melding om at man har brukt opp antall sjanser.
-                    if (response.contains("du har vunnet", ignoreCase = true) ||
-                        response.contains("brukt opp dine 3 forsøk", ignoreCase = true) || // Antatt feilmelding
-                        response.contains("Feil, du må registrer navn og kortnummer", ignoreCase = true) // Hvis session er tapt
-                    ) {
-                        Log.d("GameFragment", "Spillet er over. Viser dialog.")
-                        showGameEndDialog(response)
+                    val hasWon = response.contains("du har vunnet", ignoreCase = true)
+                    val hasLostGame = response.contains("Beklager ingen flere sjanser, du må starte på nytt", ignoreCase = true)
+                    val sessionErrorNeedsRegistration = response.contains("Feil, du må registrer navn og kortnummer", ignoreCase = true)
+                    val cookieOrInitialParamError = response.contains("Du har glemt å støtte cookies, eller du har ikke oppgit parameterene navn og kortnummer", ignoreCase = true)
+
+                    if (hasWon || hasLostGame || sessionErrorNeedsRegistration || cookieOrInitialParamError) {
+                        Log.d("GameFragment", "Spillet er over. Viser dialog. Vunnet: $hasWon, Tapt: $hasLostGame, SesjonsfeilReg: $sessionErrorNeedsRegistration, CookieFeil: $cookieOrInitialParamError")
+                        showGameEndDialog(response, hasWon)
                     }
                 }
             }
@@ -119,22 +106,22 @@ class GameFragment : Fragment(R.layout.fragment_game) {
     }
 
     /**
-     * Viser en dialogboks når spillet er over (enten vunnet eller tapt).
-     * Gir brukeren mulighet til å starte et nytt spill, som fjerner alle fragmenter
-     * fra backstacken og effektivt returnerer til [RegistrationFragment] (siden MainActivity
-     * vil laste den på nytt hvis backstacken er tom).
+     * Viser en dialogboks når spillet er over (enten vunnet, tapt, eller ved sesjonsfeil).
+     * Gir brukeren mulighet til å starte et nytt spill, som navigerer tilbake til [RegistrationFragment].
      *
-     * @param message Meldingen som skal vises i dialogen (f.eks. vinnermeldingen).
+     * @param message Meldingen som skal vises i dialogen (f.eks. vinnermeldingen fra tjeneren).
+     * @param playerWon True hvis spilleren har vunnet, false ellers. Brukes for å sette passende tittel.
      */
-    private fun showGameEndDialog(message: String) {
+    private fun showGameEndDialog(message: String, playerWon: Boolean) {
         AlertDialog.Builder(requireContext())
-            .setTitle(if (message.contains("du har vunnet", ignoreCase = true)) "Gratulerer!" else "Spillet er over")
+            .setTitle(if (playerWon) "Gratulerer!" else "Spillet er over")
             .setMessage(message)
             .setPositiveButton("Start Nytt Spill") { dialog, _ ->
-                Log.d("GameFragment", "Bruker valgte 'Start Nytt Spill'. Tømmer backstack.")
-                // Fjerner alle fragmenter fra backstacken. Dette vil føre til at
-                // MainActivity (hvis den er satt opp til det) laster RegistrationFragment på nytt.
-                parentFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                Log.d("GameFragment", "Bruker valgte 'Start Nytt Spill'. Navigerer til RegistrationFragment.")
+
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, RegistrationFragment())
+                    .commit()
                 dialog.dismiss()
             }
             .setCancelable(false) // Forhindrer at dialogen lukkes ved trykk utenfor
