@@ -15,7 +15,7 @@ import java.net.Socket
 
 class Server (
     private val textView: TextView,
-    private val PORT: Int = 8080
+    private val PORT: Int = 12345
 )  {
     private var ui: String? = ""
         set(str) {
