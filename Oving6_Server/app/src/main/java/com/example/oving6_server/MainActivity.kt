@@ -8,6 +8,7 @@ class MainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        actionBar?.hide()
         setContentView(R.layout.activity_main)
         val textView = findViewById<TextView>(R.id.text)
         Server(textView).start()
