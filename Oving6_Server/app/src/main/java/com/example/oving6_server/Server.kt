@@ -45,7 +45,7 @@ class Server (
     }
 
     private fun readFromClient(socket: Socket) {
-        val reder =
+        val reader =
             BufferedReader(InputStreamReader(socket.getInputStream()))
         val message = reader.readLine()
         ui = "Client is saying:\n$message"
