@@ -7,6 +7,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.io.PrintWriter
 import java.net.ServerSocket
 import java.net.Socket
 
@@ -51,4 +52,9 @@ class Server (
         ui = "Client is saying:\n$message"
     }
 
+    private fun sendToClient(socket: Socket, message: String) {
+        val writer = PrintWriter(socket.getOutputStream(), true)
+        writer.println(message)
+        ui = "Sent the following to the client:\n$message"
+    }
 }
