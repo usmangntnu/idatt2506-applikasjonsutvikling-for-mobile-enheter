@@ -5,6 +5,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import java.io.BufferedReader
+import java.io.InputStreamReader
 import java.net.ServerSocket
 import java.net.Socket
 
@@ -41,4 +43,12 @@ class Server (
 
         }
     }
+
+    private fun readFromClient(socket: Socket) {
+        val reder =
+            BufferedReader(InputStreamReader(socket.getInputStream()))
+        val message = reader.readLine()
+        ui = "Client is saying:\n$message"
+    }
+
 }
