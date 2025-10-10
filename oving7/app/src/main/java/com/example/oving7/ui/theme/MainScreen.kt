@@ -27,6 +27,10 @@ fun MainScreen(viewModel: FilmViewModel, onOpenSettings: () -> Unit) {
         else -> Color.White
     }
 
+    var expanded by remember { mutableStateOf(false) }
+    var selectedFilter by remember { mutableStateOf("Alle filmer") }
+    var filterText by remember { mutableStateOf("") }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -44,7 +48,85 @@ fun MainScreen(viewModel: FilmViewModel, onOpenSettings: () -> Unit) {
                 .fillMaxSize()
                 .background(background)
                 .padding(padding)
+                .padding(16.dp)
         ) {
+
+            // Filtermeny
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = { expanded = !expanded }
+            ) {
+                TextField(
+                    value = selectedFilter,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("Velg visning") },
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                    },
+                    modifier = Modifier.menuAnchor().fillMaxWidth()
+                )
+
+                ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                    DropdownMenuItem(
+                        text = { Text("Alle filmer") },
+                        onClick = {
+                            selectedFilter = "Alle filmer"
+                            expanded = false
+                            viewModel.loadFilms(LocalContext.current)
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("Filmer etter regissør") },
+                        onClick = {
+                            selectedFilter = "Filmer etter regissør"
+                            expanded = false
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("Skuespillere for film") },
+                        onClick = {
+                            selectedFilter = "Skuespillere for film"
+                            expanded = false
+                        }
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(12.dp))
+
+            // Søkefelt – vises bare ved filtrering
+            if (selectedFilter != "Alle filmer") {
+                OutlinedTextField(
+                    value = filterText,
+                    onValueChange = { filterText = it },
+                    label = {
+                        Text(
+                            if (selectedFilter == "Filmer etter regissør")
+                                "Søk etter regissør"
+                            else
+                                "Søk etter filmtittel"
+                        )
+                    },
+                    trailingIcon = {
+                        IconButton(onClick = {
+                            val context = LocalContext.current
+                            if (selectedFilter == "Filmer etter regissør") {
+                                viewModel.filterByRegissor(filterText)
+                            } else {
+                                viewModel.filterByFilm(filterText)
+                            }
+                        }) {
+                            Icon(Icons.Default.Search, contentDescription = "Søk")
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
+            Spacer(Modifier.height(16.dp))
+
+            // Liste over filmer
             LazyColumn {
                 items(filmer) { film ->
                     Column(Modifier.padding(8.dp)) {
