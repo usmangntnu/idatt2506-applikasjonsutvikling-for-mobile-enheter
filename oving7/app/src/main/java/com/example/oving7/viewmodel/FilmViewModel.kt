@@ -40,6 +40,13 @@ class FilmViewModel(
         }
     }
 
+    fun filterByFilm(title: String) {
+        viewModelScope.launch {
+            filmer.value = filmDao.getByTittel(title)
+        }
+    }
+
+
     fun updateColor(color: String) {
         viewModelScope.launch { prefs.setColor(color) }
     }
