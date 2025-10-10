@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
@@ -62,6 +63,7 @@ dependencies {
 
     // For Room (database)
     implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
     // Du må også legge til kapt for Room, se kommentar under
     implementation("androidx.room:room-ktx:2.6.1")
 
