@@ -1,0 +1,7 @@
+{
+  "name": "idatt2506-prosjektoving",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
