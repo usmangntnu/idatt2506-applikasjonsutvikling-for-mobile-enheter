@@ -5,7 +5,7 @@ import {ToDoList} from "../models/types";
 const FILE_NAME = 'lists.json';
 
 //Saves the provided lists to a file in JSON format
-export const saveLists = async (lists: TodoList[]) => {
+export const saveLists = async (lists: ToDoList[]) => {
     await Filesystem.writeFile({
         path: FILE_NAME,
         data: JSON.stringify(lists),
@@ -15,7 +15,7 @@ export const saveLists = async (lists: TodoList[]) => {
 };
 
 //Function that retrieves the saved lists from the file
-export const readLists = async (): Promise<TodoList[]> => {
+export const readLists = async (): Promise<ToDoList[]> => {
     try {
         const contents = await Filesystem.readFile({
             path: FILE_NAME,
