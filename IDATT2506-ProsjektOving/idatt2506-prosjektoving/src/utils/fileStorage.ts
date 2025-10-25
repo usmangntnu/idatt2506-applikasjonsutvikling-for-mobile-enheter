@@ -14,3 +14,18 @@ export const saveLists = async (lists: TodoList[]) => {
     });
 };
 
+//Function that retrieves the saved lists from the file
+export const readLists = async (): Promise<TodoList[]> => {
+    try {
+        const contents = await Filesystem.readFile({
+            path: FILE_NAME,
+            directory: Directory.Data,
+            encoding: Encoding.UTF8
+        });
+        return JSON.parse(contents.data) || [];
+    } catch (e) {
+        return [];
+    }
+};
+
+
