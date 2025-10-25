@@ -7,7 +7,7 @@ export interface ToDoItem {
     }
 
     //Represents a collection  of elements with a name for the list
-    export interface ToDoIList {
+    export interface ToDoList {
     name: string;
     items: ToDoItem[];
     }
