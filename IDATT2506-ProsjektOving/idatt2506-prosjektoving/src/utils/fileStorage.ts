@@ -22,7 +22,7 @@ export const readLists = async (): Promise<ToDoList[]> => {
             directory: Directory.Data,
             encoding: Encoding.UTF8
         });
-        return JSON.parse(contents.data) || [];
+        return JSON.parse(contents.data as string) || [];
     } catch (e) {
         return [];
     }
