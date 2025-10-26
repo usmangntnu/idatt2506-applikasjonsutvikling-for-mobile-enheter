@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IonApp} from "@ionic/react";
+import {IonApp, IonContent, IonHeader, IonTitle, IonToolbar} from "@ionic/react";
 import { ToDoList } from "./models/types"
 import ListTabs from './components/ListTabs';
 import TodoInput from './components/TodoInput';
