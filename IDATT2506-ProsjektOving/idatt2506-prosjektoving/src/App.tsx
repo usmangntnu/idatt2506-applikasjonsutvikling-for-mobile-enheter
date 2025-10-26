@@ -26,3 +26,11 @@ const App: React.FC = () => {
         setLists([...lists, { name, items: [] }]);
         setActiveListId(lists.length);
     }
+
+    // Delete a list
+    const deleteList = (index: number) => {
+        const newLists = [...lists];
+        newLists.splice(index, 1);
+        setLists(newLists);
+        setActiveListIndex(0);
+    };
