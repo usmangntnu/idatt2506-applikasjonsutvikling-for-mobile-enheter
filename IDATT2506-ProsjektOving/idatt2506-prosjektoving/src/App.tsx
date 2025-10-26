@@ -21,3 +21,8 @@ const App: React.FC = () => {
         saveLists(lists);
     }, [lists]);
 
+    // Add a new list
+    const addList = (name: string) => {
+        setLists([...lists, { name, items: [] }]);
+        setActiveListId(lists.length);
+    }
