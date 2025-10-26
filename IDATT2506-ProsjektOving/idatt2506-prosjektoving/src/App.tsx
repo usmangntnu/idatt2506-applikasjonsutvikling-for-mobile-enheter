@@ -34,3 +34,10 @@ const App: React.FC = () => {
         setLists(newLists);
         setActiveListIndex(0);
     };
+
+    // Add a new item to the active list
+    const addTodo = (text: string) => {
+        const newLists = [...lists];
+        newLists[activeListIndex].items.unshift ({ id: Date.now().toString(), text, done: false });
+        setLists(newLists);
+    };
