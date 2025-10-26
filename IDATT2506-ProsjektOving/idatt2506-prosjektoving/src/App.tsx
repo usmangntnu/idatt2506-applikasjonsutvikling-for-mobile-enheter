@@ -10,3 +10,14 @@ const App: React.FC = () => {
     const [lists, setLists] = useState<TodoList[]>([]);
     const [activeListId, setActiveListId] = useState<number>(0);
 }
+
+    // Load saved lists
+    useEffect(() => {
+        readLists().then(setLists);
+    }, []);
+
+    // Save lists on change
+    useEffect(() => {
+        saveLists(lists);
+    }, [lists]);
+
