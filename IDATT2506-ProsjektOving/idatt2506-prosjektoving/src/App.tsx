@@ -8,7 +8,7 @@ import { readLists, saveLists } from './utils/fileStorage';
 
 const App: React.FC = () => {
     const [lists, setLists] = useState<ToDoList[]>([]);
-    const [activeListId, setActiveListId] = useState<number>(0);
+    const [activeIndex, setActiveIndex] = useState<number>(0);
 
     // Load saved lists
     useEffect(() => {
@@ -23,7 +23,7 @@ const App: React.FC = () => {
     // Add a new list
     const addList = (name: string) => {
         setLists([...lists, { name, items: [] }]);
-        setActiveListId(lists.length);
+        setActiveIndex(lists.length);
     }
 
     // Delete a list
@@ -31,24 +31,24 @@ const App: React.FC = () => {
         const newLists = [...lists];
         newLists.splice(index, 1);
         setLists(newLists);
-        setActiveListIndex(0);
+        setActiveIndex(0);
     };
 
     // Add a new item to the active list
     const addTodo = (text: string) => {
         const newLists = [...lists];
-        newLists[activeListIndex].items.unshift ({ id: Date.now().toString(), text, done: false });
+        newLists[activeIndex ].items.unshift ({ id: Date.now().toString(), text, done: false });
         setLists(newLists);
     };
 
     // Toggle item done status
     const toggleDone = (id: string) => {
         const newLists = [...lists];
-        const item = newLists[activeListIndex].items.find(i => i.id === id);
+        const item = newLists[activeIndex ].items.find(i => i.id === id);
         if (item) {
             item.done = !item.done;
             // Move finished items to the bottom
-            newLists[activeListIndex].items.sort((a, b) => Number(a.done) - Number(b.done));
+            newLists[activeIndex ].items.sort((a, b) => Number(a.done) - Number(b.done));
             setLists(newLists);
         }
     };
@@ -61,9 +61,9 @@ const App: React.FC = () => {
                 </IonToolbar>
             </IonHeader>
             <IonContent className="ion-padding">
-                <ListTabs lists={lists} activeIndex={activeListIndex} setActiveIndex={setActiveListIndex} addList={addList} deleteList={deleteList}/>
+                <ListTabs lists={lists} activeIndex={activeIndex } setActiveIndex={setActiveIndex } addList={addList} deleteList={deleteList}/>
                 <TodoInput addTodo={addTodo}/>
-                {lists[activeListIndex] && <TodoListView items={lists[activeListIndex].items} toggleDone={toggleDone}/>}
+                {lists[activeIndex ] && <TodoListView items={lists[activeIndex ].items} toggleDone={toggleDone}/>}
             </IonContent>
         </IonApp>
     );
