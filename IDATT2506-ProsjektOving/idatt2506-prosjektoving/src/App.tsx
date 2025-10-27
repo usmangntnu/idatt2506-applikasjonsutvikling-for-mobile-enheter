@@ -5,6 +5,7 @@ import ListTabs from './components/ListTabs';
 import TodoInput from './components/TodoInput';
 import TodoListView from './components/TodoListView';
 import { readLists, saveLists } from './utils/fileStorage';
+import "./App.css"
 
 //Tested on Android Emulator version: TODO: Fyll inn versjon her etterhvert
 
