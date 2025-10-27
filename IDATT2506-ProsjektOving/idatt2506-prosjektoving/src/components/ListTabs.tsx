@@ -11,19 +11,21 @@ interface Props {
     deleteList: (index: number) => void;
 }
 
-//Component itself
+//KRAV 3: Component itself that displays lists using tabs
 const ListTabs: React.FC<Props> = ({ lists, activeIndex, setActiveIndex, addList, deleteList }) => {
     const [newListName, setNewListName] = useState('');
 
     //Switching between lists, adding lists  and deleting lists
     return (
         <>
+            {/* KRAV 3: IonSegment used for tab-based list overview */}
             <IonSegment value={activeIndex.toString()}>
                 {lists.map((list, idx) => (
                     <div key={idx} style={{ display: 'flex', alignItems: 'center' }}>
                         <IonSegmentButton value={idx.toString()} onClick={() => setActiveIndex(idx)}>
                             <IonLabel>{list.name}</IonLabel>
                         </IonSegmentButton>
+                        {/* KRAV 2: Delete button for removing lists */}
                         <IonButton
                             color="danger"
                             size="small"
@@ -36,6 +38,7 @@ const ListTabs: React.FC<Props> = ({ lists, activeIndex, setActiveIndex, addList
                 ))}
             </IonSegment>
 
+            {/* KRAV 1: Input field and button for creating new lists */}
             <input value={newListName} onChange={e => setNewListName(e.target.value)} placeholder="Ny liste"/>
             <IonButton onClick={() => { if(newListName) { addList(newListName); setNewListName(''); }}}>Legg til liste</IonButton>
         </>

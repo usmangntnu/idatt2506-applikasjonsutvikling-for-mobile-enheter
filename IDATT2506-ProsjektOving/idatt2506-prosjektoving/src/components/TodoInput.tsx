@@ -6,20 +6,20 @@ interface Props {
     addTodo: (text: string) => void;
 }
 
-//Component itself
+// KRAV 4: Component itself, has input field to add some new element
 const TodoInput: React.FC<Props> = ({ addTodo }) => {
     const [text, setText] = useState('');
     const inputRef = useRef<HTMLIonInputElement>(null);
-    //Handles enter key press to add new element
+    //KRAV 5: Handles enter key press to add new element
     const handleEnter = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter' && text.trim() !== '') {
             addTodo(text.trim());
             setText('');
-            //Here to keep focus on input after one element is added
+            //KRAV 5: Here to keep focus on input after one element is added
             setTimeout(() => inputRef.current?.setFocus(), 100);
         }
     };
-    //Field to add a new element
+    //KRAV 4 og 5: Field to add a new element and triggers keyboard on focus
     return (
         <IonInput
             ref={inputRef}
