@@ -15,6 +15,13 @@ interface Props {
 const ListTabs: React.FC<Props> = ({ lists, activeIndex, setActiveIndex, addList, deleteList }) => {
     const [newListName, setNewListName] = useState('');
 
+    const handleEnter = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' && newListName.trim() !== '') {
+            addList(newListName.trim());
+            setNewListName('');
+        }
+    };
+
     //Switching between lists, adding lists  and deleting lists
     return (
         <>
@@ -43,9 +50,9 @@ const ListTabs: React.FC<Props> = ({ lists, activeIndex, setActiveIndex, addList
                 className="new-list-input"
                 value={newListName}
                 onChange={e => setNewListName(e.target.value)}
-                placeholder="Ny liste"
+                onKeyPress={handleEnter}
+                placeholder="Ny liste (trykk Enter)"
             />
-            <IonButton onClick={() => { if(newListName) { addList(newListName); setNewListName(''); }}}>Legg til liste</IonButton>
         </>
     );
 };
