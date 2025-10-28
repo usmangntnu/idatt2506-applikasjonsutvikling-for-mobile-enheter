@@ -29,36 +29,29 @@ const ListTabs: React.FC<Props> = ({ lists, activeIndex, setActiveIndex, addList
         setShowDeleteAlert(true);
     }
 
-    //Switching between lists, adding lists  and deleting lists
     return (
         <>
             {/* KRAV 3: IonSegment used for tab-based list overview */}
-            <IonSegment value={activeIndex.toString()} scrollable>
+            <IonSegment
+                value={activeIndex.toString()}
+                scrollable
+                onIonChange={e => setActiveIndex(Number(e.detail.value))}
+            >
                 {lists.map((list, idx) => (
                     <IonSegmentButton
                         key={idx}
                         value={idx.toString()}
-                        onClick={() => setActiveIndex(idx)}>
-                            <IonLabel>{list.name}</IonLabel>
+                        onContextMenu={(e) => {
+                            e.preventDefault();
+                            confirmDeleteList(idx);
+                        }}
+                    >
+                        <IonLabel>{list.name}</IonLabel>
                     </IonSegmentButton>
                 ))}
             </IonSegment>
 
-            {/* KRAV 2: Delete button for removing lists. In own row under the Tabs */}
-            <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '8px' }}>
-                {lists.map((list, idx) => (
-                    <IonButton
-                        key={idx}
-                        color="danger"
-                        size="small"
-                        onClick={() => confirmDeleteList(idx)}
-                    >
-                        X
-                    </IonButton>
-                ))}
-            </div>
-
-            {/* KRAV 1: Input field and button for creating new lists */}
+            {/* KRAV 1: Input field for creating new lists */}
             <input
                 className="new-list-input"
                 value={newListName}
@@ -67,28 +60,29 @@ const ListTabs: React.FC<Props> = ({ lists, activeIndex, setActiveIndex, addList
                 placeholder="Ny liste (trykk Enter)"
             />
 
-    <IonAlert
-        isOpen={showDeleteAlert}
-        onDidDismiss={() => setShowDeleteAlert(false)}
-        header="Bekreft sletting"
-        message="Er du sikker på at du vil slette denne listen?"
-        buttons={[
-            {
-                text: 'Avbryt',
-                role: 'cancel'
-            },
-            {
-                text: 'Slett',
-                role: 'confirm',
-                handler: () => {
-                    if (deleteIndex !== null) {
-                        deleteList(deleteIndex);
+            {/* KRAV 2: Delete confirmation alert */}
+            <IonAlert
+                isOpen={showDeleteAlert}
+                onDidDismiss={() => setShowDeleteAlert(false)}
+                header="Bekreft sletting"
+                message="Er du sikker på at du vil slette denne listen?"
+                buttons={[
+                    {
+                        text: 'Avbryt',
+                        role: 'cancel'
+                    },
+                    {
+                        text: 'Slett',
+                        role: 'confirm',
+                        handler: () => {
+                            if (deleteIndex !== null) {
+                                deleteList(deleteIndex);
+                            }
+                        }
                     }
-                }
-            }
-        ]}
-    />
-</>
+                ]}
+            />
+        </>
     );
 };
 
