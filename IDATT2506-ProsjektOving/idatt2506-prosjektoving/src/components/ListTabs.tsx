@@ -28,22 +28,28 @@ const ListTabs: React.FC<Props> = ({ lists, activeIndex, setActiveIndex, addList
             {/* KRAV 3: IonSegment used for tab-based list overview */}
             <IonSegment value={activeIndex.toString()}>
                 {lists.map((list, idx) => (
-                    <div key={idx} className="list-tab-container">
-                        <IonSegmentButton value={idx.toString()} onClick={() => setActiveIndex(idx)}>
+                    <IonSegmentButton
+                        key={idx}
+                        value={idx.toString()}
+                        onClick={() => setActiveIndex(idx)}>
                             <IonLabel>{list.name}</IonLabel>
-                        </IonSegmentButton>
-                        {/* KRAV 2: Delete button for removing lists */}
-                        <IonButton
-                            color="danger"
-                            size="small"
-                            className="delete-button"
-                            onClick={() => deleteList(idx)}
-                        >
-                            X
-                        </IonButton>
-                    </div>
+                    </IonSegmentButton>
                 ))}
             </IonSegment>
+
+            {/* KRAV 2: Delete button for removing lists. In own row under the Tabs */}
+            <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '8px' }}>
+                {lists.map((list, idx) => (
+                    <IonButton
+                        key={idx}
+                        color="danger"
+                        size="small"
+                        onClick={() => deleteList(idx)}
+                    >
+                        X
+                    </IonButton>
+                ))}
+            </div>
 
             {/* KRAV 1: Input field and button for creating new lists */}
             <input
