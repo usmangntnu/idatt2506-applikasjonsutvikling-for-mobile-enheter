@@ -33,7 +33,7 @@ const ListTabs: React.FC<Props> = ({ lists, activeIndex, setActiveIndex, addList
     return (
         <>
             {/* KRAV 3: IonSegment used for tab-based list overview */}
-            <IonSegment value={activeIndex.toString()}>
+            <IonSegment value={activeIndex.toString()} scrollable>
                 {lists.map((list, idx) => (
                     <IonSegmentButton
                         key={idx}
