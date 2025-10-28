@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IonSegment, IonSegmentButton, IonLabel, IonButton } from '@ionic/react';
+import { IonSegment, IonSegmentButton, IonLabel, IonButton, IonAlert } from '@ionic/react';
 import { ToDoList } from '../models/types';
 
 //What data and function are gotten from App.tsx
@@ -14,6 +14,8 @@ interface Props {
 //KRAV 3: Component itself that displays lists using tabs
 const ListTabs: React.FC<Props> = ({ lists, activeIndex, setActiveIndex, addList, deleteList }) => {
     const [newListName, setNewListName] = useState('');
+    const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+    const [deleteIndex, setDeleteIndex] = useState<number | null>(null);
 
     const handleEnter = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter' && newListName.trim() !== '') {
@@ -21,6 +23,11 @@ const ListTabs: React.FC<Props> = ({ lists, activeIndex, setActiveIndex, addList
             setNewListName('');
         }
     };
+
+    const confirmDeleteList = (index: number) => {
+        setDeleteIndex(index);
+        setShowDeleteAlert(true);
+    }
 
     //Switching between lists, adding lists  and deleting lists
     return (
@@ -44,7 +51,7 @@ const ListTabs: React.FC<Props> = ({ lists, activeIndex, setActiveIndex, addList
                         key={idx}
                         color="danger"
                         size="small"
-                        onClick={() => deleteList(idx)}
+                        onClick={() => confirmDeleteList(idx)}
                     >
                         X
                     </IonButton>
@@ -59,8 +66,31 @@ const ListTabs: React.FC<Props> = ({ lists, activeIndex, setActiveIndex, addList
                 onKeyPress={handleEnter}
                 placeholder="Ny liste (trykk Enter)"
             />
-        </>
+
+    <IonAlert
+        isOpen={showDeleteAlert}
+        onDidDismiss={() => setShowDeleteAlert(false)}
+        header="Bekreft sletting"
+        message="Er du sikker på at du vil slette denne listen?"
+        buttons={[
+            {
+                text: 'Avbryt',
+                role: 'cancel'
+            },
+            {
+                text: 'Slett',
+                role: 'confirm',
+                handler: () => {
+                    if (deleteIndex !== null) {
+                        deleteList(deleteIndex);
+                    }
+                }
+            }
+        ]}
+    />
+</>
     );
 };
+
 
 export default ListTabs;
