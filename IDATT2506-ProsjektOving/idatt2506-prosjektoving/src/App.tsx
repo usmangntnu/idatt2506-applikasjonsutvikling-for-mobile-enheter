@@ -7,21 +7,27 @@ import TodoListView from './components/TodoListView';
 import { readLists, saveLists } from './utils/fileStorage';
 import "./App.css"
 
-//Tested on Android Emulator version: TODO: Fyll inn versjon her etterhvert
+//Tested on Android Emulator version: Android 16.0 ("Baklava") - API 36
 
 const App: React.FC = () => {
     const [lists, setLists] = useState<ToDoList[]>([]);
     const [activeIndex, setActiveIndex] = useState<number>(0);
+    const [isLoaded, setIsLoaded] = useState(false);
 
-    //KRAV 9: Load saved lists
+// KRAV 9: Load saved lists
     useEffect(() => {
-        readLists().then(setLists);
+        readLists().then(loadedLists => {
+            setLists(loadedLists);
+            setIsLoaded(true);
+        });
     }, []);
 
-    //KRAV 9: Save lists on change
+// KRAV 9: Save lists on change (only after initial load)
     useEffect(() => {
-        saveLists(lists);
-    }, [lists]);
+        if (isLoaded) {
+            saveLists(lists);
+        }
+    }, [lists, isLoaded]);
 
     //KRAV 1: Add a new list
     const addList = (name: string) => {
