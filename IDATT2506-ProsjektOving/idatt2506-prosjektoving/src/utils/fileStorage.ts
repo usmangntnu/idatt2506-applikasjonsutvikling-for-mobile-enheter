@@ -9,7 +9,7 @@ export const saveLists = async (lists: ToDoList[]) => {
     await Filesystem.writeFile({
         path: FILE_NAME,
         data: JSON.stringify(lists),
-        directory: Directory.Data,
+        directory: Directory.Documents,
         encoding: Encoding.UTF8
     });
 };
@@ -19,7 +19,7 @@ export const readLists = async (): Promise<ToDoList[]> => {
     try {
         const contents = await Filesystem.readFile({
             path: FILE_NAME,
-            directory: Directory.Data,
+            directory: Directory.Documents,
             encoding: Encoding.UTF8
         });
         return JSON.parse(contents.data as string) || [];
