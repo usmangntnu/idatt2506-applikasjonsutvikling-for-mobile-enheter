@@ -1,13 +1,3 @@
-/* Layout styling for list tabs */
-.list-tab-container {
-    display: flex;
-    align-items: center;
-}
-
-.delete-button {
-    margin-left: 4px;
-}
-
 /* Todo item styling */
 .todo-item {
     border-radius: 8px;
