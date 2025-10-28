@@ -66,8 +66,8 @@ const App: React.FC = () => {
             <IonContent className="ion-padding">
                 {/* KRAV 3: Overview of lists using tabs */}
                 <ListTabs lists={lists} activeIndex={activeIndex } setActiveIndex={setActiveIndex } addList={addList} deleteList={deleteList}/>
-                {/* KRAV 4: Input field for adding new items */}
-                <TodoInput addTodo={addTodo}/>
+                {/* KRAV 4: Input field for adding new items, just shown when a list is chosen */}
+                {lists.length >0 && <TodoInput addTodo={addTodo}/>}
                 {/* KRAV 6: Display list items */}
                 {lists[activeIndex ] && <TodoListView items={lists[activeIndex ].items} toggleDone={toggleDone}/>}
             </IonContent>
