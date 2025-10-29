@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { IonSegment, IonSegmentButton, IonLabel, IonButton, IonAlert } from '@ionic/react';
+import React, { useState, useRef } from 'react';
+import { IonSegment, IonSegmentButton, IonLabel, IonAlert } from '@ionic/react';
 import { ToDoList } from '../models/types';
 
 //What data and function are gotten from App.tsx
@@ -16,11 +16,18 @@ const ListTabs: React.FC<Props> = ({ lists, activeIndex, setActiveIndex, addList
     const [newListName, setNewListName] = useState('');
     const [showDeleteAlert, setShowDeleteAlert] = useState(false);
     const [deleteIndex, setDeleteIndex] = useState<number | null>(null);
+    const inputRef = useRef<HTMLInputElement | null>(null);
 
-    const handleEnter = (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter' && newListName.trim() !== '') {
-            addList(newListName.trim());
-            setNewListName('');
+    const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            e.stopPropagation();
+            const name = newListName.trim();
+            if (name) {
+                addList(name);
+                setNewListName('');
+            }
+            inputRef.current?.focus();
         }
     };
 
@@ -53,10 +60,12 @@ const ListTabs: React.FC<Props> = ({ lists, activeIndex, setActiveIndex, addList
 
             {/* KRAV 1: Input field for creating new lists */}
             <input
+                ref={inputRef}
                 className="new-list-input"
                 value={newListName}
                 onChange={e => setNewListName(e.target.value)}
-                onKeyPress={handleEnter}
+                onKeyDown={handleEnter}
+                enterKeyHint="done"
                 placeholder="Ny liste (trykk Enter)"
             />
 
